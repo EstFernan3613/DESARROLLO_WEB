@@ -1,45 +1,32 @@
+import React from "react"
 import { useState } from "react"
+import AddCategory from "./Components/AddCategory"
+import GifGrid from "./Components/GifGrid"
 
 const ComponentApp =() => {
 
-    // Almacenamiento de las categorias
-    const[ categories, setCategories ] = useState([])
-    // Control del valor del Input Inicial
-    const[category, setCategory] = useState('')
+    const[ categories, setCategories ] = useState(['Genshin Impact - Personajes proporcionados por el Usuario'])
 
-    // Funcion para agregar una categoria
-
-    const AddCategory = () => {
-          // Actualiza el estado de "categories" utilizando una función de actualización.
-        // La función recibe el estado anterior como argumento y devuelve el nuevo estado.
-        // Aquí, estamos agregando la nueva categoría al estado anterior usando el operador spread (...) y el valor de "category".
+    const OnAddCategory = ( category ) => {
         setCategories( list => [...list, category])
-        setCategory('')
     }
-
-    const SetCategoryOtro = (evt) => {
-        setCategory( evt.target.value )
-    }
-
 
     return (
         <>
-        <h1>GifExpert</h1>
-        <input type="text" value={category}
-        onChange={(event) => SetCategoryOtro(event)}/>
-        <button onClick={() => AddCategory()}> Añadir Categoria </button>
-        <ol>
+            <h1>Ingresa tu Personaje de Genshin</h1>
+
+            <AddCategory OnAddCategory={OnAddCategory}/>
             {
                 categories.map(
                     (category, key) =>
                     {
-                        return <li key={ key }>{ category }</li>
+                        return <GifGrid category={category} key={key}/>
                     }
-                    )
-                }
-        </ol>
+                )
+            }
         </>
-    )
+    )    
 }
 
 export default ComponentApp;
+        
