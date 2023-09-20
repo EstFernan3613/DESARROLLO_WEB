@@ -1,11 +1,10 @@
 import React from "react"
 import { useState } from "react"
-import AddCategory from "./Components/AddCategory"
-import GifGrid from "./Components/GifGrid"
+import { AddCategory, GifGrid } from "./Components"
 
 const ComponentApp =() => {
 
-    const[ categories, setCategories ] = useState(['Genshin Impact - Personajes proporcionados por el Usuario'])
+    const[ categories, setCategories ] = useState([])
 
     const OnAddCategory = ( category ) => {
         setCategories( list => [...list, category])
