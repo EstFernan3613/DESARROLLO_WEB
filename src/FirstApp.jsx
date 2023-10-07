@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import useCounter from './Hooks/UseCounter';
+import {useCounter} from "./Hooks/useCounter";
 
 const FirstApp = ({ title, title2, title3, sum, value }) => {
   const { counter, increment, decrement, reset } = useCounter(value);
@@ -15,7 +15,7 @@ const FirstApp = ({ title, title2, title3, sum, value }) => {
         <h1>Counter</h1>
         <span> {counter} </span>
         <button onClick={increment}>+1</button>
-        <button onClick={reset}>Reset</button>
+        <button onClick={reset}>Resetear</button>
         <button onClick={decrement}>-1</button>
       </div>
     </>
