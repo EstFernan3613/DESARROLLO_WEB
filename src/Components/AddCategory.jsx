@@ -18,7 +18,7 @@ export const AddCategory = ({OnAddCategory}) => {
         <form onSubmit={(event) => onSubmit(event)}>
             <input
                 type="text"
-                placeholder="Personaje de Genshin"
+                placeholder="Añadir categoría"
                 value={inputValue}
                 onChange={(event) => onInputChange(event)}
             />
