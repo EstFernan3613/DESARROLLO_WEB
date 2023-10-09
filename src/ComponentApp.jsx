@@ -12,7 +12,7 @@ const ComponentApp =() => {
 
     return (
         <>
-            <h1>Ingresa tu Personaje de Genshin</h1>
+            <h1>Ingresa el GIF que quieras buscar</h1>
 
             <AddCategory OnAddCategory={OnAddCategory}/>
             {
