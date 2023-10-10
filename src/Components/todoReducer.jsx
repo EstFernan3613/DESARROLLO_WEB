@@ -3,6 +3,6 @@ export const todoReducer = (initialState = [], action) => {
         case '[TODO] ADD TODO':
             return [ ... initialState, action.payload];
         default:
-            return initialState;
+            return initialState;        
     }
 }
