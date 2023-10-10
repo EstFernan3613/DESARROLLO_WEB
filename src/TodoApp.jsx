@@ -4,33 +4,82 @@ import { TodoList } from "./Components/TodoList";
 import { todoReducer } from "./Components/todoReducer";
 import * as types from "./Components/types";
 
-const initialState = []
+const initialState = [];
 
 const init = () => {
     return JSON.parse(localStorage.getItem('todos')) || [];
-}
+};
 
-export const TodoApp = () => {
-    const [ todos, dispatch ] = useReducer(todoReducer, initialState, init);
+export const useTodos = () => {
+    const [todos, dispatch] = useReducer(todoReducer, initialState, init);
 
     useEffect(() => {
-        localStorage.setItem('todos', JSON.stringify(todos))
-    }, [todos])
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }, [todos]);
 
-    const handleNewTodo = ( todo ) => {
+    const handleNewTodo = (todo) => {
         const action = {
             type: types.CREATE_TODO,
             payload: todo
-        }
-        dispatch( action )
-    }
+        };
+        dispatch(action);
+    };
+
+    const handleDeleteTodo = (id) => {
+        const action = {
+            type: types.DELETE_TODO,
+            payload: id
+        };
+        dispatch(action);
+    };
+
+    const handleToggleTodo = (id) => {
+        const action = {
+            type: types.TOGGLE_TODO,
+            payload: id
+        };
+        dispatch(action);
+    };
+
+    const countTodos = () => {
+        return todos.length;
+    };
+
+    const countPendingTodos = () => {
+        return todos.filter(todo => !todo.done).length;
+    };
+
+    return {
+        todos,
+        handleNewTodo,
+        handleDeleteTodo,
+        handleToggleTodo,
+        countTodos,
+        countPendingTodos
+    };
+};
+
+export const TodoApp = () => {
+    const {
+        todos,
+        handleNewTodo,
+        handleDeleteTodo,
+        handleToggleTodo,
+        countTodos,
+        countPendingTodos
+    } = useTodos();
 
     return (
-        <>
-            <h1>Todo App / Pendientes:{ todos.length }</h1>
-            <hr />
+        <div>
+            <h1>Todo App</h1>
             <TodoAdd handleNewTodo={handleNewTodo} />
-            <TodoList todos={todos} dispatch={dispatch} />
-        </>
-    )
-}
+            <TodoList
+                todos={todos}
+                handleDeleteTodo={handleDeleteTodo}
+                handleToggleTodo={handleToggleTodo}
+            />
+            <p>Total Todos: {countTodos()}</p>
+            <p>Pending Todos: {countPendingTodos()}</p>
+        </div>
+    );
+};
