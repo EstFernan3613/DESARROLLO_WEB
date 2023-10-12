@@ -72,14 +72,15 @@ export const TodoApp = () => {
     return (
         <div>
             <h1>Todo App</h1>
+            <h2>Tareas Pendientes: {countTodos()}</h2>
+            <h3> Es necesario recargar la pagina, hace uso del Local Storage </h3>
+            <p> </p>
             <TodoAdd handleNewTodo={handleNewTodo} />
             <TodoList
                 todos={todos}
                 handleDeleteTodo={handleDeleteTodo}
                 handleToggleTodo={handleToggleTodo}
             />
-            <p>Total Todos: {countTodos()}</p>
-            <p>Pending Todos: {countPendingTodos()}</p>
         </div>
     );
 };
