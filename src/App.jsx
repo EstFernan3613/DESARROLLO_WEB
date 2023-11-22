@@ -1,12 +1,13 @@
-const App = () => {
+import React from 'react';
+import { UserProvider } from './contexts/UserProvider';
+import { LoginPage } from './pages/LoginPage';
+
+function App() {
   return (
-    <>
-    <div> 
-      <h1> Hola Mundo </h1>
-      <h2>Bienvenidos</h2>
-    </div>
-    </>
-    )
-} 
+    <UserProvider>
+      <LoginPage />
+    </UserProvider>
+  );
+}
 
 export default App;

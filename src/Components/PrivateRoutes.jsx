@@ -1,12 +1,16 @@
-import React, { useContext } from "react"
-import { useLocation } from "react-router-dom"
-import { UserContext } from "../contexts/UserContext"
+import { useLocation, useNavigate } from 'react-router-dom';
 
-export const PrivateRoutes = ({ children }) => {
-    const { user } = useContext(UserContext)
+export const PrivateRoutes = ({ component: Component, ...rest }) => {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const { pathname, search } = useLocation();
-    localStorage.setItem('lastPath', `${pathname}${search}`) 
+  useEffect(() => {
+    if (!user) {
+      localStorage.setItem('lastVisited', location.pathname);
+      navigate('/login');
+    }
+  }, [user, location, navigate]);
 
-    return user ? children : <> Error 403 </>
-}
+  return user ? <Component {...rest} /> : null;
+};

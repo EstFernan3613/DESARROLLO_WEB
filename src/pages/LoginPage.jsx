@@ -1,40 +1,28 @@
-import React, { useContext} from "react";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
-import { UserProvider } from "../contexts/UserProvider";
+import React, { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 
 export const LoginPage = () => {
+  const { user, login, logout } = useContext(UserContext);
 
-    const { user, setUser } = useContext(UserContext);
-    const navigate = useNavigate();
+  const handleLogin = () => {
+    const fakeUser = { name: 'Juan Esteban Fernandez Cuervo' };
+    login(fakeUser);
+  };
 
-    const onLogin = () => {
-        setUser({
-            id: 313,
-            name: 'Juan Esteban',
-            email: 'juanfernandez12@hotmail.com'
-        })
+  const handleLogout = () => {
+    logout();
+  };
 
-        const lasPath = localStorage.getItem('lastPath') || '/';
-        navigate(lasPath, { 
-          replace: true 
-        })
-      }   
-      
-      return (
+  return (
+    <div>
+      {user ? (
         <>
-
-            <div>Login Page</div>
-            <pre>
-                { JSON.stringify(user, null, 3) }
-            </pre>
-
-            <button 
-                className="btn btn-primary"
-                onClick={ () => onLogin() }
-            >
-                Login
-            </button>
+          <p>Welcome, {user.name}!</p>
+          <button onClick={handleLogout}>Logout</button>
         </>
-      )
-}
+      ) : (
+        <button onClick={handleLogin}>Login</button>
+      )}
+    </div>
+  );
+};
