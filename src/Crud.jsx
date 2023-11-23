@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useCollection } from "./firebase/firestore";
+import { updateUser, deleteUser } from "./firebase/firestoreOperations";
 
 export const Crud = () => {
 
@@ -21,24 +22,38 @@ export const Crud = () => {
         setUser({ name: event.target.value });
     }
 
+    const handleUpdate = async (id, user) => {
+        await updateUser(id, user);
+      };
+      
+      const handleDelete = async (id) => {
+        await deleteUser(id);
+      };
+
     useEffect(() => {
         getAllDocs();
     }, [])
 
     return (
         <>
-            <input type="text" onChange={handleSetUser} value={user.name} />
-            <button type="button" onClick={save}>Guardar</button>
+          <input type="text" onChange={handleSetUser} value={user.name} />
+          <button type="button" onClick={save}>Guardar</button>
+          {
+            isPending ? <span> Saving... </span> : ''
+          }
+          <ul>
             {
-                isPending ? <span> Saving... </span> : ''
+              results.map( item => {
+                return (
+                  <li key={item.id}>
+                    {JSON.stringify(item)}
+                    <button onClick={() => handleUpdate(item.id, user)}>Update</button>
+                    <button onClick={() => handleDelete(item.id)}>Delete</button>
+                  </li>
+                )
+              })
             }
-            <ul>
-                {
-                    results.map( item => {
-                        return <li key={item.id}> {JSON.stringify(item) }</li>
-                    })
-                }
-            </ul>
+          </ul>
         </>
-    )
+      )
 }
