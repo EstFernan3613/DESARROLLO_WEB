@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useUploadHook } from './hooks/useUploadHook';
+import { useDeleteHook } from './hooks/useDeleteHook';
 
 export const Upload = () => {
 
@@ -10,6 +11,8 @@ export const Upload = () => {
         handleUpload,
         handleGetAll
     } = useUploadHook();
+
+    const { deleteImage } = useDeleteHook();
     
     useEffect(() => {
         handleGetAll();
@@ -26,6 +29,13 @@ export const Upload = () => {
                     return <img width='100px' src= { item } key={key} />
                 })
             }
+
+                        {files.map((file, index) => (
+                <div key={index}>
+                    <img src={file.url} alt={file.name} />
+                    <button onClick={() => deleteImage(file.name)}>Delete</button>
+                </div>
+            ))}
         </div>
     )
 }
