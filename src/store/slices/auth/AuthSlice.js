@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { auth } from "../../../firebase/config";
+import { signInWithEmailAndPassword, signInWithPopup, signOut, GoogleAuthProvider } from "@firebase/auth";
 
 export const authSlice = createSlice({
     name: "auth",
@@ -11,16 +13,38 @@ export const authSlice = createSlice({
         errorMessage: null
     },
     reducers: {
-        register: (state, action) => {
-            state.email = action.payload.email
+        login: (state, action) => {
+            signInWithEmailAndPassword(auth, action.payload.email, action.payload.password)
+                .then((userCredential) => {
+                    // User is signed in
+                    state.user = userCredential.user;
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         },
-        logout: (state, action) => {
-
+        loginWithGoogle: (state) => {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    // User is signed in
+                    state.user = result.user;
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         },
-        checkingCredentials: (state, action) => {
-            console.log("checking")
+        logout: (state) => {
+            signOut(auth)
+                .then(() => {
+                    // User is signed out
+                    state.user = null;
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         }
     }
 })
 
-export const { register, logout, checkingCredentials } = authSlice.actions
+export const { login, loginWithGoogle, logout } = authSlice.actions

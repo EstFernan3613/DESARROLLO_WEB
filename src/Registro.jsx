@@ -3,42 +3,42 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { auth } from "./firebase/config";
 import { useForm } from "./hooks/useForm";
-import { logout, register } from "./store/slices/auth/AuthSlice";
 import { registerAuth } from "./store/slices/auth/Thunks";
+import { useSelector } from "react-redux";
+import { useMemo } from "react";
+import { login, loginWithGoogle, logout } from "./store/slices/auth/AuthSlice";
 
 export const Registro = () => {
 
-    const dispatch = useDispatch()
+    const authState = useSelector((state) => state.auth);
+    const memoizedAuthState = useMemo(() => authState, [authState]);
+    const dispatch = useDispatch();
 
     const { email, password, onInputChange, formState } = useForm({
-        email: 'juanfernandez@gmail.com',
+        email: 'juan_est.fernandez@gmail.com',
         password: '123456'
-    })
-
+    });
+    
     const onSubmit = (event) => {
-        event.preventDefault()
-        console.log(formState)
-        dispatch(registerAuth(email, password))
-    }
-
-    useEffect(() => {
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) return dispatch(logout());
-
-            dispatch(register({ email: user.email }))
-        })
-    }, [])
+        event.preventDefault();
+        dispatch(login({ email, password }));
+    };
+    
+    const onLoginWithGoogle = () => {
+        dispatch(loginWithGoogle());
+    };
+    
+    const onLogout = () => {
+        dispatch(logout());
+    };
 
     return (
         <>
             <h1>Registro</h1>
             <hr/>
-            <form onSubmit={( event ) => onSubmit(event)}>
-                <input name="email" type="email" onChange={(event) => onInputChange(event)}  value={email}  />
-                <input name="password" type="password" onChange={(event) => onInputChange(event)}  value={password}  />
-
-                <button type="submit">Registro</button>
-            </form>
+            <button onClick={onSubmit} disabled={memoizedAuthState.user}>Login</button>
+            <button onClick={onLoginWithGoogle} disabled={memoizedAuthState.user}>Login with Google</button>
+            <button onClick={onLogout} disabled={!memoizedAuthState.user}>Logout</button>
         </>
     )
 }
